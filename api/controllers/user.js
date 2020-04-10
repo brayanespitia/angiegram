@@ -1,5 +1,7 @@
 "use strict";
 var bcrypt = require("bcrypt-nodejs");
+var mongoosePaginate = require("mongoose-pagination");
+
 var User = require("../models/user");
 var jwt = require("../services/jwt");
 
@@ -113,9 +115,73 @@ function loginUser(req, res) {
   });
 }
 
+//conseguir datos de un usuario
+
+function getUser(req, res) {
+  var userId = req.params.id;
+  User.findById(userId, (err, user) => {
+    if (err) return res.status(500).send({ message: "error en la peticion" });
+    if (!user) return res.status(404).send({ message: "el usuario no existe" });
+    return res.status(200).send({ user });
+  });
+}
+
+//listado de usuarios paginados
+
+function getUsers(req, res) {
+  var identity_user_id = req.user.sub;
+  var page = 1;
+  if (req.params.page) {
+    page = req.params.page;
+  }
+  var itemsPerPage = 5;
+
+  User.findOne()
+    .sort("_id")
+    .paginate(page, itemsPerPage, (err, users, total) => {
+      if (err) return res.status(500).send({ message: "error en la peticion" });
+      if (!users)
+        return res.status(404).send({ message: "no hay usuarios disponibles" });
+      return res.status(200).send({
+        users,
+        total,
+        pages: Math.ceil(total / itemsPerPage),
+      });
+    });
+}
+
+// editar los datos de un usuario
+
+function updateUser(req, res) {
+  var userId = req.params.id;
+  var update = req.body;
+  //borrar la propiedad password
+
+  delete update.password;
+  if (userId != req.user.sub) {
+    return res.status(500).send({
+      message: "no tienes persmiso para actualizar los datos del usuario",
+    });
+  }
+  User.findByIdAndUpdate(userId, update, { new: true }, (err, userUpdated) => {
+    if (err) return res.status(500).send({ message: "error en la peticion" });
+    if (!userUpdated)
+      return res
+        .status(404)
+        .send({ message: "no se ha podido actuializar el usuario" });
+
+    return res.status(200).send({ user: userUpdated });
+  });
+}
+
+//subir imagen de perfil del usuario
+
 module.exports = {
   home,
   pruebas,
   saveUser,
   loginUser,
+  getUser,
+  getUsers,
+  updateUser,
 };

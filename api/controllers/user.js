@@ -4,6 +4,7 @@ var mongoosePaginate = require("mongoose-pagination");
 var fs = require("fs");
 var path = require("path");
 
+var Follow = require("../models/follow");
 var User = require("../models/user");
 var jwt = require("../services/jwt");
 
@@ -121,11 +122,51 @@ function loginUser(req, res) {
 
 function getUser(req, res) {
   var userId = req.params.id;
+
   User.findById(userId, (err, user) => {
-    if (err) return res.status(500).send({ message: "error en la peticion" });
-    if (!user) return res.status(404).send({ message: "el usuario no existe" });
-    return res.status(200).send({ user });
+    if (!user) return res.status(404).send({ message: "User Not Found." });
+    if (err) return res.status(500).send({ message: "Request Error." });
+
+    followThisUser(req.user.sub, userId).then((value) => {
+      return res.status(200).send({
+        user,
+        following: value.following,
+        followed: value.followed,
+      });
+    });
   });
+}
+
+async function followThisUser(identity_user_id, user_id) {
+  var following = await Follow.findOne({
+    user: identity_user_id,
+    followed: user_id,
+  })
+    .exec()
+    .then((follow) => {
+      return follow;
+    })
+    .catch((err) => {
+      return handleError(err);
+    });
+
+  var followed = await Follow.findOne({
+    user: user_id,
+    followed: identity_user_id,
+  })
+    .exec()
+    .then((follow) => {
+      console.log(follow);
+      return follow;
+    })
+    .catch((err) => {
+      return handleError(err);
+    });
+
+  return {
+    following: following,
+    followed: followed,
+  };
 }
 
 //listado de usuarios paginados
@@ -138,7 +179,7 @@ function getUsers(req, res) {
   }
   var itemsPerPage = 5;
 
-  User.findOne()
+  User.find()
     .sort("_id")
     .paginate(page, itemsPerPage, (err, users, total) => {
       if (err) return res.status(500).send({ message: "error en la peticion" });
@@ -262,5 +303,5 @@ module.exports = {
   getUsers,
   updateUser,
   uploadImage,
-  getImageFile
+  getImageFile,
 };

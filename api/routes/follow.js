@@ -16,5 +16,9 @@ api.get(
   md_auth.ensureAuth,
   FollowController.getFollowedUsers
 );
-
+api.get(
+  "/get-my-follows/:followed?",
+  md_auth.ensureAuth,
+  FollowController.getMyfollows
+);
 module.exports = api;

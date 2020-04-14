@@ -185,12 +185,95 @@ function getUsers(req, res) {
       if (err) return res.status(500).send({ message: "error en la peticion" });
       if (!users)
         return res.status(404).send({ message: "no hay usuarios disponibles" });
-      return res.status(200).send({
-        users,
-        total,
-        pages: Math.ceil(total / itemsPerPage),
+
+      followUserIds(identity_user_id).then((value) => {
+        return res.status(200).send({
+          users,
+          users_following: value.following,
+          user_follow_me: value.followed,
+          total,
+          pages: Math.ceil(total / itemsPerPage),
+        });
       });
     });
+}
+
+async function followUserIds(user_id) {
+  var following = await Follow.find({ user: user_id })
+    .select({ _id: 0, __uv: 0, user: 0 })
+    .exec()
+    .then((follows) => {
+      var follows_clean = [];
+
+      follows.forEach((follow) => {
+        follows_clean.push(follow.followed);
+      });
+
+      console.log(follows_clean);
+
+      return follows_clean;
+    })
+    .catch((err) => {
+      return handleerror(err);
+    });
+
+  var followed = await Follow.find({ followed: user_id })
+    .select({ _id: 0, __uv: 0, followed: 0 })
+    .exec()
+    .then((follows) => {
+      var follows_clean = [];
+
+      follows.forEach((follow) => {
+        follows_clean.push(follow.user);
+      });
+
+      return follows_clean;
+    })
+    .catch((err) => {
+      return handleerror(err);
+    });
+
+  console.log(following);
+
+  return {
+    following: following,
+
+    followed: followed,
+  };
+}
+
+function getCounters(req, res) {
+  var userId = req.user.sub;
+
+  if (req.params.id) {
+    userId = req.params.id;
+  }
+  getCountFollow(userId).then((value) => {
+    return res.status(200).send(value);
+  });
+}
+
+async function getCountFollow(user_id) {
+  var following = await Follow.countDocuments({ user: user_id })
+    .exec()
+    .then((count) => {
+      console.log(count);
+      return count;
+    })
+    .catch((err) => {
+      return handleError(err);
+    });
+
+  var followed = await Follow.countDocuments({ followed: user_id })
+    .exec()
+    .then((count) => {
+      return count;
+    })
+    .catch((err) => {
+      return handleError(err);
+    });
+
+  return { following: following, followed: followed };
 }
 
 // editar los datos de un usuario
@@ -301,6 +384,7 @@ module.exports = {
   loginUser,
   getUser,
   getUsers,
+  getCounters,
   updateUser,
   uploadImage,
   getImageFile,

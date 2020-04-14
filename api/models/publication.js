@@ -3,11 +3,11 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var PublicationSchema = Schma({
+var PublicationSchema = Schema({
   text: String,
   file: String,
   create_at: String,
-  user: { type: Schema.ObjetId, ref: "user" },
+  user: { type: Schema.ObjectId, ref: "User" },
 });
 
 module.exports = mongoose.model("Publication", PublicationSchema);

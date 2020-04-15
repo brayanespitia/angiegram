@@ -5,6 +5,7 @@ var fs = require("fs");
 var path = require("path");
 
 var Follow = require("../models/follow");
+var Publication = require("../models/publication");
 var User = require("../models/user");
 var jwt = require("../services/jwt");
 
@@ -272,8 +273,20 @@ async function getCountFollow(user_id) {
     .catch((err) => {
       return handleError(err);
     });
+  var publications = await Publication.count({ user: user_id })
+    .exec()
+    .then((count) => {
+      return count;
+    })
+    .catch((err) => {
+      if (err) return handleError(err);
+    });
 
-  return { following: following, followed: followed };
+  return {
+    following: following,
+    followed: followed,
+    publications: publications,
+  };
 }
 
 // editar los datos de un usuario

@@ -24,5 +24,21 @@ api.get(
   md_auth.ensureAuth,
   PublicationController.getPublication
 );
+api.delete(
+  "/publication/:id",
+  md_auth.ensureAuth,
+  PublicationController.deletePublication
+);
+
+api.post(
+  "/upload-image-pub/:id",
+  [md_auth.ensureAuth, md_upload],
+  PublicationController.uploadImage
+);
+
+api.get(
+  "/get-image-publication/:imageFile",
+  PublicationController.getImageFile
+);
 
 module.exports = api;

@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { routing, appRoutingProviders } from "./app.routing";
 
 //componentes
 import { AppComponent } from "./app.component";
@@ -8,8 +9,8 @@ import { RegisterComponent } from "./components/register/register.component";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent],
-  imports: [BrowserModule],
-  providers: [],
+  imports: [BrowserModule, routing],
+  providers: [appRoutingProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

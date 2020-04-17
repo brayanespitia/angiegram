@@ -19,26 +19,26 @@ export class RegisterComponent implements OnInit {
     private _userService: UserService
   ) {
     this.title = "Registrate";
-    this.user = new User("", "", "", "", "", "", "ROLE_USER", "");
+    this.user = new User("", "", "", "", "", "", "ROLE_USER", "", "");
   }
   ngOnInit() {
     console.log("componente cargado de registro");
   }
-	onSubmit(form){
-		this._userService.register(this.user).subscribe(
-			response => {
-				if(response.user && response.user._id){
-					console.log(response.user);
+  onSubmit(form) {
+    this._userService.register(this.user).subscribe(
+      (response) => {
+        if (response.user && response.user._id) {
+          console.log(response.user);
 
-					this.status = 'success';
-					form.reset();
-				}else{
-					this.status = 'error';
-				}
-			},
-			error => {
-				console.log(<any>error);
-			}
-		);
-	}
+          this.status = "success";
+          form.reset();
+        } else {
+          this.status = "error";
+        }
+      },
+      (error) => {
+        console.log(<any>error);
+      }
+    );
+  }
 }

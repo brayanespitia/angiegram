@@ -8,6 +8,10 @@
   border-bottom: 1px solid #eee;
 }
 
+.active {
+  background: #04519b;
+}
+
 /* headers*/
 
 .navigation {
@@ -21,4 +25,8 @@
 
 .navigation .navbar * {
   color: white !important;
+}
+
+.navigation .navbar a:hover {
+  background: #04519b !important;
 }

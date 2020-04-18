@@ -1,5 +1,7 @@
 import { Component, OnInit, DoCheck } from "@angular/core";
+
 import { UserService } from "./services/user.service";
+import { Router, ActivatedRoute, Params, Route } from "@angular/router";
 
 @Component({
   selector: "app-root",
@@ -11,7 +13,11 @@ export class AppComponent {
   public title: string;
   public identity: string;
 
-  constructor(private _userService: UserService) {
+  constructor(
+    private _userService: UserService,
+    private _route: ActivatedRoute,
+    private _router: Router
+  ) {
     this.title = "ANGIEGRAM";
   }
 
@@ -21,5 +27,11 @@ export class AppComponent {
   }
   ngDoCheck() {
     this.identity = this._userService.getIdentity();
+  }
+
+  logout() {
+    localStorage.clear();
+    this.identity = null;
+    this._router.navigate(["/"]);
   }
 }

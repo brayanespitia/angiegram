@@ -11,7 +11,7 @@
 
       <ul class="nav navbar-nav" *ngIf="identity">
         <li>
-          <a href="#">
+          <a [routerLink]="['/home']" [routerLinkActive]="['active']">
             <span class="glyphicon glyphicon-home"></span>
             inicio</a>
         </li>
@@ -42,6 +42,40 @@
           </a>
         </li>
       </ul>
+
+
+      <ul class="nav navbar-nav navbar-right" *ngIf="identity">
+        <li class="avatar">
+          <!--cargar imagen de usuario-->
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            {{identity}} <span class="caret"></span>
+          </a>
+
+          <ul class="dropdown-menu">
+            <li>
+              <a>
+                <span class="glyphicon glyphicon-user"></span>
+                Mi perfil
+              </a>
+            </li>
+            <li>
+              <a>
+                <span class="glyphicon glyphicon-cog"></span>
+                Mis datos
+              </a>
+            </li>
+            <li>
+              <a class="pointer" (click)="logout()">
+                <span class="glyphicon glyphicon-log-out"></span>
+                Cerrar sesión
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
 
     </div>
   </nav>

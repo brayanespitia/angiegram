@@ -11,6 +11,9 @@
 .active {
   background: #04519b;
 }
+.pointer {
+  cursor: pointer;
+}
 
 /* headers*/
 
@@ -29,4 +32,26 @@
 
 .navigation .navbar a:hover {
   background: #04519b !important;
+}
+
+.jumbotron {
+  padding: 30px;
+  border-radius: 5px;
+  text-align: center;
+}
+.navigation .navbar .dropdown-menu * {
+  color: black !important;
+}
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:focus {
+  background: #04519b !important;
+}
+
+.navigation .navbar .dropdown-menu a:hover {
+  background: #eee !important;
+}
+
+.jumbotron .btn {
+  margin-left: 20px;
 }

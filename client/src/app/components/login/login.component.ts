@@ -28,23 +28,49 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    //logear al usuario y conseguir sus datos
-
-    this._userService.singup(this.user).subscribe(
+    // loguear al usuario y conseguir sus datos
+    this._userService.signup(this.user).subscribe(
       (response) => {
         this.identity = response.user;
+
         console.log(this.identity);
+
         if (!this.identity || !this.identity._id) {
           this.status = "error";
         } else {
-          this.status = "success";
-          // alamacennar datos de usuario en sesion con lcoal storage
+          // PERSISTIR DATOS DEL USUARIO
           localStorage.setItem("identity", JSON.stringify(this.identity));
-          //conseguir token
+
+          // Conseguir el token
           this.getToken();
         }
-        console.log(response.user);
-        this.status = "success";
+      },
+      (error) => {
+        var errorMessage = <any>error;
+        console.log(errorMessage);
+
+        if (errorMessage != null) {
+          this.status = "error";
+        }
+      }
+    );
+  }
+
+  getToken() {
+    this._userService.signup(this.user, "true").subscribe(
+      (response) => {
+        this.token = response.token;
+        console.log(this.token);
+        if (this.token.length <= 0) {
+          this.status = "error";
+        } else {
+          //token con local storage
+          localStorage.setItem("token", this.token);
+
+          //conseguir los contadores o estadisticas del usuario
+
+          this.getCounters();
+        }
       },
       (error) => {
         var errorMessage = <any>error;
@@ -56,28 +82,15 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  getToken() {
-    this._userService.singup(this.user, "true").subscribe(
+  getCounters() {
+    this._userService.getCounters().subscribe(
       (response) => {
-        this.token = response.token;
-        console.log(this.token);
-        if (this.token.length <= 0) {
-          this.status = "error";
-        } else {
-          this.status = "success";
-
-          //token con local storage
-          localStorage.setItem("token", this.token);
-
-          //conseguir los contadores o estadisticas del usuario
-        }
+        localStorage.setItem("stats", JSON.stringify(response));
+        this.status = "success";
+        this._router.navigate(["/"]);
       },
       (error) => {
-        var errorMessage = <any>error;
-        console.log(errorMessage);
-        if (errorMessage != null) {
-          this.status = "error";
-        }
+        console.log(<any>error);
       }
     );
   }

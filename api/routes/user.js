@@ -19,7 +19,7 @@ api.get("/counters/:id?", md_auth.ensureAuth, UserController.getCounters);
 api.put(
   "/update-user/:id",
   [md_auth.ensureAuth, md_upload],
-  UserController.uploadImage
+  UserController.updateUser
 );
 api.post(
   "/upload-image-user/:id",

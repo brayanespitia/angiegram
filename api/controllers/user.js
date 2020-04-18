@@ -108,7 +108,7 @@ function loginUser(req, res) {
         } else {
           return res
             .status(404)
-            .send({ message: "el usuario nop se ha podido logear" });
+            .send({ message: "el usuario nope se ha podido logear" });
         }
       });
     } else {

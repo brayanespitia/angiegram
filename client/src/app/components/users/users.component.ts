@@ -15,6 +15,9 @@ export class UsersComponent implements OnInit {
   public identity;
   public token;
   public page;
+  public total;
+  public pages;
+  public users: User[];
   public next_page;
   public prev_page;
   public status;
@@ -60,6 +63,12 @@ export class UsersComponent implements OnInit {
           this.status = "error";
         } else {
           console.log(response);
+          this.total = response.total;
+          this.users = response.users;
+          this.pages = response.pages;
+          if (page > this.pages) {
+            this._router.navigate(["/gente", 1]);
+          }
         }
       },
       (error) => {

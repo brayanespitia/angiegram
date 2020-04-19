@@ -11,6 +11,7 @@ import { RegisterComponent } from "./components/register/register.component";
 import { FormsModule } from "@angular/forms";
 import { HomeComponent } from "./components/home/home.component";
 import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
     RegisterComponent,
     HomeComponent,
     UserEditComponent,
+    UsersComponent,
   ],
   imports: [BrowserModule, routing, FormsModule, HttpClientModule],
   providers: [appRoutingProviders],

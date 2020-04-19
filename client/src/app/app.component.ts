@@ -1,7 +1,7 @@
 import { Component, OnInit, DoCheck } from "@angular/core";
-
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { UserService } from "./services/user.service";
-import { Router, ActivatedRoute, Params, Route } from "@angular/router";
+import { Global } from "./services/global";
 
 @Component({
   selector: "app-root",
@@ -9,16 +9,18 @@ import { Router, ActivatedRoute, Params, Route } from "@angular/router";
   styleUrls: ["./app.component.css"],
   providers: [UserService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, DoCheck {
   public title: string;
-  public identity: string;
+  public identity;
+  public url: string;
 
   constructor(
-    private _userService: UserService,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _userService: UserService
   ) {
     this.title = "ANGIEGRAM";
+    this.url = Global.url;
   }
 
   ngOnInit() {

@@ -43,7 +43,10 @@
             </span>
         </p>
 
-
+        <p>
+            <label for=""> sube tu avatar</label>
+            <input type="file" placeholder="subir imagen" (change)="fileChangeEvent($event)">
+        </p>
 
 
         <input type="submit" value="{{title}}" class="btn btn-warning" [disabled]="!userEditForm.form.valid" />

@@ -70,3 +70,29 @@
   width: 35px;
   height: 35px;
 }
+
+.item-user .image-user {
+  width: 120px;
+  height: 120px;
+  border-radius: 100px;
+
+  margin-top: 8px;
+}
+
+.item-user .image-user img {
+  width: 100px;
+  height: 100px;
+}
+
+.item-user .user-name {
+  margin-top: 20px;
+}
+
+.item-user .user-name .nickname {
+  color: gray;
+}
+
+.name-surname {
+  color: red;
+  font-weight: bold;
+}

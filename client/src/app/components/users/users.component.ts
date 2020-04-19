@@ -21,6 +21,7 @@ export class UsersComponent implements OnInit {
   public next_page;
   public prev_page;
   public status;
+  public url: string;
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
@@ -29,6 +30,7 @@ export class UsersComponent implements OnInit {
     this.title = "Gente";
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
+    this.url = Global.url;
   }
 
   ngOnInit() {
@@ -40,6 +42,9 @@ export class UsersComponent implements OnInit {
     this._route.params.subscribe((params) => {
       let page = +params["page"];
       this.page = page;
+      if (!params["page"]) {
+        page = 1;
+      }
 
       if (!page) {
         page = 1;

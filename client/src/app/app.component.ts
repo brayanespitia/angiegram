@@ -13,6 +13,7 @@ export class AppComponent implements OnInit, DoCheck {
   public title: string;
   public identity;
   public url: string;
+  public stats;
 
   constructor(
     private _route: ActivatedRoute,

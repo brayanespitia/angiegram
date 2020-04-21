@@ -2,7 +2,9 @@
 
 var mongoose = require("mongoose");
 var app = require("./app");
-var port = 3800;
+//var port = 3800;
+
+const port = process.env.PORT || 3800;
 
 mongoose.set("useFindAndModify", false);
 mongoose.Promise = global.Promise;
@@ -17,7 +19,9 @@ mongoose
 
     //crear servidor
     app.listen(port, () => {
-      console.log("servidor corriendo conrrectamente en http://localhost:3800");
+      console.log(
+        `servidor corriendo conrrectamente en http://localhost:${port}`
+      );
     });
   })
   .catch((err) => console.log(err));

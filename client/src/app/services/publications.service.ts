@@ -47,7 +47,6 @@ export class PublicationService {
       { headers: headers }
     );
   }
-
   deletePublication(token, id): Observable<any> {
     let headers = new HttpHeaders()
       .set("Content-Type", "application/json")

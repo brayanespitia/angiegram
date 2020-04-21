@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { Global } from "../../services/global";
 import { Publication } from "../../models/publication";
@@ -24,6 +24,8 @@ export class PublicationsComponent implements OnInit {
   public itemsPerPage;
 
   public publications: Publication[];
+
+  @Input() user: string;
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
@@ -39,51 +41,57 @@ export class PublicationsComponent implements OnInit {
 
   ngOnInit() {
     console.log("componente tpublicaciones cargado");
-    this.getPublications(this.page);
+    this.getPublications(this.user, this.page);
   }
 
-  getPublications(page, adding = false) {
-    this._publicationService.getPublications(this.token, page).subscribe(
-      (response) => {
-        if (response.publications) {
-          this.total = response.total_items;
-          this.pages = response.pages;
-          this.itemsPerPage = response.items_per_page;
+  getPublications(user, page, adding = false) {
+    this._publicationService
+      .getPublicationsUser(this.token, user, page)
+      .subscribe(
+        (response) => {
+          if (response.publications) {
+            this.total = response.total_items;
+            this.pages = response.pages;
+            this.itemsPerPage = response.items_per_page;
 
-          if (!adding) {
-            this.publications = response.publications;
+            if (!adding) {
+              this.publications = response.publications;
+            } else {
+              var arrayA = this.publications;
+              var arrayB = response.publications;
+              this.publications = arrayA.concat(arrayB);
+
+              $("html, body").animate(
+                { scrollTop: $("html").prop("scrollHeight") },
+                500
+              );
+            }
+
+            if (page > this.pages) {
+              //this._router.navigate(['/home']);
+            }
           } else {
-            var arrayA = this.publications;
-            var arrayB = response.publications;
-            this.publications = arrayA.concat(arrayB);
-            $("html, body").animate(
-              { scrollTop: $("body").prop("scrollHeight") },
-              500
-            );
+            this.status = "error";
           }
-
-          if (page > this.pages) {
-            //this._router.navigate(['/home']);
+        },
+        (error) => {
+          var errorMessage = <any>error;
+          console.log(errorMessage);
+          if (errorMessage != null) {
+            this.status = "error";
           }
-        } else {
-          this.status = "error";
         }
-      },
-      (error) => {
-        var errorMessage = <any>error;
-        console.log(errorMessage);
-        if (errorMessage != null) {
-          this.status = "error";
-        }
-      }
-    );
+      );
   }
+
   public noMore = false;
   viewMore() {
     this.page += 1;
+
     if (this.page == this.pages) {
       this.noMore = true;
     }
-    this.getPublications(this.page, true);
+
+    this.getPublications(this.user, this.page, true);
   }
 }

@@ -24,6 +24,8 @@ export class TimelineComponent implements OnInit {
   public itemsPerPage;
 
   public publications: Publication[];
+  public showImage;
+
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
@@ -87,7 +89,25 @@ export class TimelineComponent implements OnInit {
     this.getPublications(this.page, true);
   }
 
-  refresh(event) {
+  refresh(event = null) {
     this.getPublications(1);
+  }
+
+  showThisImage(id) {
+    this.showImage = id;
+  }
+  hideThisImage(id) {
+    this.showImage = 0;
+  }
+
+  deletePublication(id) {
+    this._publicationService.deletePublication(this.token, id).subscribe(
+      (response) => {
+        this.refresh();
+      },
+      (error) => {
+        console.log(<any>error);
+      }
+    );
   }
 }

@@ -41,4 +41,10 @@ api.get(
   PublicationController.getImageFile
 );
 
+api.get(
+  "/publications-user/:user/:page?",
+  md_auth.ensureAuth,
+  PublicationController.getPublicationsUser
+);
+
 module.exports = api;

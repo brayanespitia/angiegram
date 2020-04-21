@@ -5,6 +5,9 @@ import { routing, appRoutingProviders } from "./app.routing";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { MomentModule } from "angular2-moment";
 
+// Modulo custom
+import { MessagesModule } from "./messages/messages.module";
+
 //componentes
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
@@ -17,8 +20,11 @@ import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { TimelineComponent } from "./components/timeline/timeline.component";
 import { from } from "rxjs";
 import { PublicationsComponent } from "./components/publications/publications.component";
-import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileComponent } from "./components/profile/profile.component";
 
+import { FollowedComponent } from "./components/followed/followed.component";
+import { FollowingComponent } from "./components/following/following.component";
+import { UserService } from "./services/user.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +37,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     TimelineComponent,
     PublicationsComponent,
     ProfileComponent,
+    FollowingComponent,
+    FollowedComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,8 +46,9 @@ import { ProfileComponent } from './components/profile/profile.component';
     FormsModule,
     HttpClientModule,
     MomentModule,
+    MessagesModule,
   ],
-  providers: [appRoutingProviders],
+  providers: [appRoutingProviders, UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

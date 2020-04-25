@@ -7,7 +7,7 @@ social network written in NodeJS y Angular <br>
 - [Bootstrap](https://getbootstrap.com/)
 - [Express](https://expressjs.com/es//)
 - [NodeJS](https://nodejs.org/es//)
-- [MongoDB]https://www.mongodb.com/es)
+- [MongoDB] https://www.mongodb.com/es)
 - [Angular9](https://angular.io/)
 ### Arquitectura:
 - MVC
